@@ -1,17 +1,23 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <svg width="20000" height="20000">
-      <g v-for="(item, rowIndex) in noRows" :key="rowIndex">
-        <BoardSquare
-          v-for="(item, colIndex) in noCols"
-          :id="key"
-          :xCoord="colIndex"
-          :yCoord="rowIndex"
-          :key="colIndex * key"
-        />
-      </g>
-    </svg>
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-centered">
+        <svg :width="noCols * sideLength" :height="noCols * sideLength">
+          <g v-for="(item, rowIndex) in noRows" :key="rowIndex">
+            <BoardSquare
+              v-for="(item, colIndex) in noCols"
+              :id="key"
+              :xCoord="colIndex"
+              :yCoord="rowIndex"
+              :key="colIndex * key"
+              :sideLength="sideLength"
+            />
+          </g>
+        </svg>
+      </div>
+      <div class="column"></div>
+    </div>
   </div>
 </template>
 
@@ -27,6 +33,7 @@ export default {
       noSquares: 64,
       noRows: 8,
       noCols: 8,
+      sideLength: 70,
     };
   },
   props: {

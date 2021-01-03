@@ -20,16 +20,13 @@ export default {
       this.$buefy.dialog.alert("x is " + this.xCoord + "y is " + this.yCoord);
     },
   },
-  props: ["xCoord", "yCoord"],
+  props: ["xCoord", "yCoord", "sideLength"],
   data() {
     return {
-      sideLength: 100,
+      anothersideLength: 100,
     };
   },
   computed: {
-    computedCoord() {
-      return this.xCoord * 3;
-    },
     computedXCoord() {
       return this.xCoord * this.sideLength;
     },
