@@ -2,16 +2,14 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <svg width="20000" height="20000">
-      <circle
-        cx="400"
-        cy="200"
-        r="100"
-        stroke="green"
-        stroke-width="4"
-        fill="yellow"
-      />
-      <g v-for="(item, index) in noSquares" :key="index">
-        <BoardSquare :id="key" :xCoord="index" :key="index * key" />
+      <g v-for="(item, rowIndex) in noRows" :key="rowIndex">
+        <BoardSquare
+          v-for="(item, colIndex) in noCols"
+          :id="key"
+          :xCoord="colIndex"
+          :yCoord="rowIndex"
+          :key="colIndex * key"
+        />
       </g>
     </svg>
   </div>
@@ -27,6 +25,8 @@ export default {
   data() {
     return {
       noSquares: 64,
+      noRows: 8,
+      noCols: 8,
     };
   },
   props: {

@@ -1,14 +1,5 @@
 <template>
   <g>
-    <circle
-      @click="alert"
-      cx="300"
-      cy="1000"
-      r="40"
-      stroke="green"
-      stroke-width="4"
-      fill="red"
-    />
     <rect
       @click="alert"
       :x="computedXCoord"
@@ -31,7 +22,7 @@ export default {
       );
     },
   },
-  props: ["xCoord"],
+  props: ["xCoord", "yCoord"],
   data() {
     return {
       sideLength: 100,
@@ -42,13 +33,10 @@ export default {
       return this.xCoord * 3;
     },
     computedXCoord() {
-      return (
-        this.xCoord * this.sideLength -
-        Math.floor(this.xCoord / 8) * this.sideLength * 8
-      );
+      return this.xCoord * this.sideLength;
     },
     computedYCoord() {
-      return Math.floor(this.xCoord / 8) * this.sideLength;
+      return this.yCoord * this.sideLength;
     },
   },
 };
