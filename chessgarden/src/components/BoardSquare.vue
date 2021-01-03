@@ -6,9 +6,9 @@
       :y="computedYCoord"
       :width="sideLength"
       :height="sideLength"
-      stroke="green"
-      stroke-width="8"
-      fill="red"
+      stroke="brown"
+      stroke-width="5"
+      :fill="computedFill"
     />
   </g>
 </template>
@@ -17,9 +17,7 @@
 export default {
   methods: {
     alert() {
-      this.$buefy.dialog.alert(
-        "x is " + this.xCoord + "ycor is " + this.computedYCoord
-      );
+      this.$buefy.dialog.alert("x is " + this.xCoord + "y is " + this.yCoord);
     },
   },
   props: ["xCoord", "yCoord"],
@@ -37,6 +35,14 @@ export default {
     },
     computedYCoord() {
       return this.yCoord * this.sideLength;
+    },
+    computedFill() {
+      if (
+        (this.xCoord % 2 && this.yCoord % 2) ||
+        (this.xCoord % 2 == 0 && this.yCoord % 2 !== 1)
+      ) {
+        return "white";
+      } else return "black";
     },
   },
 };
