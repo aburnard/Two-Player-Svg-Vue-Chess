@@ -1,14 +1,13 @@
 <template>
   <g>
-    <rect
-      @click="alert"
-      :x="computedXCoord"
-      :y="computedYCoord"
-      :width="sideLength"
-      :height="sideLength"
-      stroke="brown"
-      stroke-width="5"
-      :fill="computedFill"
+    <circle
+      @click="moveit"
+      :cx="xCoord * sideLength - sideLength/2"
+      :cy="yCoord * sideLength - sideLength/2"
+      r="30"
+      stroke="black"
+      stroke-width="3"
+      fill="red"
     />
   </g>
 </template>
@@ -17,14 +16,20 @@
 export default {
   methods: {
     alert() {
-      // this.$buefy.dialog.alert("x is " + this.xCoord + "y is " + this.yCoord);
-      //  this.$emit("emitPixel", this.pixelAddress);
-      this.$emit("emitPixel", { xOne: this.xCoord + 1, yOne: this.yCoord + 1 });
+      this.$buefy.dialog.alert("x is " + this.xCoord + "y is " + this.yCoord);
+    },
+    moveit(x, y) {
+      this.aCoord = x * this.sideLength;
+      this.bCoord = y * this.sideLength;
+
+      //this.anothersideLength += 50;
     },
   },
-  props: ["xCoord", "yCoord", "sideLength"],
+  props: ["xCoord", "yCoord", "sideLength", "pieceX", "pieceY"],
   data() {
     return {
+      aCoord: 300,
+      bCoord: 300,
       anothersideLength: 100,
     };
   },
@@ -35,10 +40,6 @@ export default {
     computedYCoord() {
       return this.yCoord * this.sideLength;
     },
-    pixelAddress: function () {
-      return [this.yCoord, this.xCoord];
-    },
-
     computedFill() {
       if (
         (this.xCoord % 2 && this.yCoord % 2) ||
