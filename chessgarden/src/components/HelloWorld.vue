@@ -8,6 +8,10 @@
       <b-input v-model="pieceX"></b-input>
     </b-field>
     <section>
+      <b-field label="SideLength">
+        <b-slider :min="1" :max="70" v-model="sideLength"></b-slider>
+        <b-slider :min="1" :max="noCols" v-model="pieceY"></b-slider>
+      </b-field>
       <b-field label="Simple">
         <b-slider :min="1" :max="noRows" v-model="pieceX"></b-slider>
         <b-slider :min="1" :max="noCols" v-model="pieceY"></b-slider>
@@ -66,9 +70,9 @@ export default {
 
   data() {
     return {
-      noRows: 8,
-      noCols: 8,
-      sideLength: 70,
+      noRows: 16,
+      noCols: 16,
+      sideLength: 50,
       randomthing: [],
       pieceX: 2,
       pieceY: 5,

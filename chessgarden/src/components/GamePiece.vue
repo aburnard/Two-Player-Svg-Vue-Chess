@@ -2,9 +2,9 @@
   <g>
     <circle
       @click="moveit"
-      :cx="xCoord * sideLength - sideLength/2"
-      :cy="yCoord * sideLength - sideLength/2"
-      r="30"
+      :cx="xCoord * sideLength - sideLength / 2"
+      :cy="yCoord * sideLength - sideLength / 2"
+      :r="sideLength * 0.4"
       stroke="black"
       stroke-width="3"
       fill="red"
@@ -34,12 +34,6 @@ export default {
     };
   },
   computed: {
-    computedXCoord() {
-      return this.xCoord * this.sideLength;
-    },
-    computedYCoord() {
-      return this.yCoord * this.sideLength;
-    },
     computedFill() {
       if (
         (this.xCoord % 2 && this.yCoord % 2) ||
