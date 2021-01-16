@@ -1,13 +1,14 @@
 <template>
   <g>
     <rect
-      @click="alert"
+     @mouseenter="handleEnter(message, $event)"
+      @click="colorPixel"
       :x="computedXCoord"
       :y="computedYCoord"
       :width="sideLength"
       :height="sideLength"
-      stroke="brown"
-      stroke-width="5"
+      stroke="grey"
+      stroke-width="1"
       :fill="computedFill"
     />
   </g>
@@ -16,16 +17,31 @@
 <script>
 export default {
   methods: {
-    alert() {
-      // this.$buefy.dialog.alert("x is " + this.xCoord + "y is " + this.yCoord);
-      //  this.$emit("emitPixel", this.pixelAddress);
-      this.$emit("emitPixel", { xOne: this.xCoord + 1, yOne: this.yCoord + 1 });
+    handleEnter(message, event) {
+      if (event.buttons == 1) {
+        this.colorPixel();
+      }
+    },
+    colorPixel() {
+      //this.pixMatrix.splice([this.yCoord][this.xCoord], 2, "blue");
+
+      // this.pixMatrix[this.yCoord][this.xCoord] = "blue";
+      this.arrayPlaceHolder = this.pixMatrix;
+      this.arrayPlaceHolder[this.yCoord][this.xCoord] = "blue";
+      this.pixMatrix = this.arrayPlaceHolder.slice(0);
+
+      //  this.pixMatrix[this.yCoord][this.xCoord];
+      // if (this.computedFill == "white") {
+      //   this.computedFill = "black";
+      // }
     },
   },
-  props: ["xCoord", "yCoord", "sideLength"],
+  props: ["xCoord", "yCoord", "sideLength", "pixMatrix"],
   data() {
     return {
       anothersideLength: 100,
+      arrayPlaceHolder: [],
+      //  computedFill: "white",
     };
   },
   computed: {
@@ -40,12 +56,8 @@ export default {
     },
 
     computedFill() {
-      if (
-        (this.xCoord % 2 && this.yCoord % 2) ||
-        (this.xCoord % 2 == 0 && this.yCoord % 2 !== 1)
-      ) {
-        return "white";
-      } else return "black";
+      return this.pixMatrix[this.yCoord][this.xCoord];
+      // return "blue";
     },
   },
 };

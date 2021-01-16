@@ -30,6 +30,7 @@
               :key="colIndex * key"
               :sideLength="sideLength"
               @emitPixel="emitPixel"
+              :pixMatrix="pixMatrix"
             />
           </g>
           <g>
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+import pixMatrix from "@/assets/pixMatrix.json";
 import BoardSquare from "@/components/BoardSquare.vue";
 import GamePiece from "@/components/GamePiece.vue";
 export default {
@@ -70,9 +72,10 @@ export default {
 
   data() {
     return {
-      noRows: 16,
-      noCols: 16,
-      sideLength: 50,
+      pixMatrix: pixMatrix.pixMatrix,
+      noRows: 32,
+      noCols: 32,
+      sideLength: 10,
       randomthing: [],
       pieceX: 2,
       pieceY: 5,

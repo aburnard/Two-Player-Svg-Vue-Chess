@@ -6,7 +6,7 @@
       :cy="yCoord * sideLength - sideLength / 2"
       :r="sideLength * 0.4"
       stroke="black"
-      stroke-width="3"
+      stroke-width="1"
       fill="red"
     />
   </g>
