@@ -1,9 +1,47 @@
 <template>
   <div class="hello">
+    <b-collapse :open="false" aria-id="contentIdForA11y1">
+      <button
+        class="button is-primary"
+        slot="trigger"
+        aria-controls="contentIdForA11y1"
+      >
+        Click for Load/Save
+      </button>
+
+      <div class="notification">
+        <div class="content">
+          <h3>FileSaving</h3>
+          <section>
+            <b-field
+              label="Copy and Paste Textarea"
+              :label-position="labelPosition"
+            >
+              <b-input v-model="pixMatrixString" type="textarea"></b-input>
+            </b-field>
+          </section>
+
+          <section>
+            <b-button @click="dumpButton">Dump To Textarea</b-button>
+            <b-button @click="loadButton">Load from Textarea</b-button>
+            <!-- <b-button @click="newCanvas">newCanvas</b-button> -->
+          </section>
+
+          <section>
+            <b-button @click="dumpIt()">Download as SVG</b-button>
+          </section>
+        </div>
+      </div>
+    </b-collapse>
     <!-- <button @click="toggleVis" class="button">Tog</button>
     <button @click="incrementSpot" class="button">Down</button>
     <button @click="incrementSpot" class="button">Left</button>
     <button @click="incrementSpot" class="button">Right</button> -->
+    <b-field>
+      <b-switch v-model="blueOrWhite" true-value="blue" false-value="white">
+        {{ blueOrWhite }}
+      </b-switch>
+    </b-field>
     <b-field label="pieceX">
       <b-input v-model="pieceX"></b-input>
     </b-field>
@@ -31,16 +69,17 @@
               :sideLength="sideLength"
               @emitPixel="emitPixel"
               :pixMatrix="pixMatrix"
+              :blueOrWhite="blueOrWhite"
             />
           </g>
-          <g>
+          <!-- <g>
             <GamePiece
               ref="child"
               :xCoord="pieceX"
               :yCoord="pieceY"
               :sideLength="sideLength"
             />
-          </g>
+          </g> -->
         </svg>
       </div>
       <div
@@ -56,30 +95,43 @@
 <script>
 import pixMatrix from "@/assets/pixMatrix.json";
 import BoardSquare from "@/components/BoardSquare.vue";
-import GamePiece from "@/components/GamePiece.vue";
+//import GamePiece from "@/components/GamePiece.vue";
 export default {
   name: "HelloWorld",
   components: {
     BoardSquare,
-    GamePiece,
+    // GamePiece,
   },
   methods: {
     emitPixel({ xOne, yOne }) {
       this.pieceX = xOne;
       this.pieceY = yOne;
     },
+    dumpButton() {
+      this.dataPixMat = this.pixMatrix.slice(0);
+
+      this.pixMatrixString = JSON.stringify(this.dataPixMat);
+    },
+    loadButton() {
+      this.dataPixMat = JSON.parse(this.pixMatrixString);
+      this.pixMatrix = this.dataPixMat.slice(0);
+    },
   },
 
   data() {
     return {
+      pixMatrixString: "",
+      isOpen: false,
       pixMatrix: pixMatrix.pixMatrix,
       noRows: 32,
       noCols: 32,
       sideLength: 10,
       randomthing: [],
+      dataPixMat: [],
       pieceX: 2,
       pieceY: 5,
       pieceArray: [200, 200],
+      blueOrWhite: "blue",
     };
   },
   props: {

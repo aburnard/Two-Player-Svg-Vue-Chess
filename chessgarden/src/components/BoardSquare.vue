@@ -1,14 +1,14 @@
 <template>
   <g>
     <rect
-     @mouseenter="handleEnter(message, $event)"
+      @mouseenter="handleEnter(message, $event)"
       @click="colorPixel"
       :x="computedXCoord"
       :y="computedYCoord"
       :width="sideLength"
       :height="sideLength"
       stroke="grey"
-      stroke-width="1"
+      stroke-width=".1"
       :fill="computedFill"
     />
   </g>
@@ -19,29 +19,31 @@ export default {
   methods: {
     handleEnter(message, event) {
       if (event.buttons == 1) {
-        this.colorPixel();
+        this.colorPixelDrag();
       }
     },
-    colorPixel() {
-      //this.pixMatrix.splice([this.yCoord][this.xCoord], 2, "blue");
-
-      // this.pixMatrix[this.yCoord][this.xCoord] = "blue";
+    colorPixelDrag() {
       this.arrayPlaceHolder = this.pixMatrix;
-      this.arrayPlaceHolder[this.yCoord][this.xCoord] = "blue";
+      this.arrayPlaceHolder[this.yCoord][this.xCoord] = this.blueOrWhite;
       this.pixMatrix = this.arrayPlaceHolder.slice(0);
-
-      //  this.pixMatrix[this.yCoord][this.xCoord];
-      // if (this.computedFill == "white") {
-      //   this.computedFill = "black";
-      // }
+    },
+    colorPixel() {
+      if (this.pixMatrix[this.yCoord][this.xCoord] == "white") {
+        this.arrayPlaceHolder = this.pixMatrix;
+        this.arrayPlaceHolder[this.yCoord][this.xCoord] = "blue";
+        this.pixMatrix = this.arrayPlaceHolder.slice(0);
+      } else {
+        this.arrayPlaceHolder = this.pixMatrix;
+        this.arrayPlaceHolder[this.yCoord][this.xCoord] = "white";
+        this.pixMatrix = this.arrayPlaceHolder.slice(0);
+      }
     },
   },
-  props: ["xCoord", "yCoord", "sideLength", "pixMatrix"],
+  props: ["xCoord", "yCoord", "sideLength", "pixMatrix", "blueOrWhite"],
   data() {
     return {
       anothersideLength: 100,
       arrayPlaceHolder: [],
-      //  computedFill: "white",
     };
   },
   computed: {
@@ -57,7 +59,6 @@ export default {
 
     computedFill() {
       return this.pixMatrix[this.yCoord][this.xCoord];
-      // return "blue";
     },
   },
 };
