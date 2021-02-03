@@ -1,5 +1,9 @@
 <template>
   <div class="hello">
+    <b-field label="Name">
+      <b-input v-model="chessset.chessset"></b-input>
+    </b-field>
+
     <!-- <button @click="toggleVis" class="button">Tog</button>
     <button @click="incrementSpot" class="button">Down</button>
     <button @click="incrementSpot" class="button">Left</button>
@@ -29,6 +33,7 @@
               :yCoord="rowIndex"
               :key="colIndex * key"
               :sideLength="sideLength"
+              :chessset="chessset"
               @emitPixel="emitPixel"
             />
           </g>
@@ -55,6 +60,7 @@
 <script>
 import BoardSquare from "@/components/BoardSquare.vue";
 import GamePiece from "@/components/GamePiece.vue";
+import chessset from "@/assets/chessset.json";
 export default {
   name: "HelloWorld",
   components: {
@@ -70,8 +76,9 @@ export default {
 
   data() {
     return {
-      noRows: 16,
-      noCols: 16,
+      chessset: chessset,
+      noRows: 8,
+      noCols: 8,
       sideLength: 50,
       randomthing: [],
       pieceX: 2,

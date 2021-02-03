@@ -10,6 +10,20 @@
       stroke-width="5"
       :fill="computedFill"
     />
+    <svg
+      :height="sideLength * 2.5"
+      :width="sideLength * 2.5"
+      :x="xCoord * sideLength - sideLength * 2.1 + sideLength"
+      :y="yCoord * sideLength - sideLength + sideLength"
+      :view-box.camel="viewbox"
+    >
+      <polygon
+        id="Path"
+        stroke="#0000FF"
+        fill="#0000FF"
+        :points="chessset.chessset[chessset.board[yCoord][xCoord]]"
+      ></polygon>
+    </svg>
   </g>
 </template>
 
@@ -22,13 +36,23 @@ export default {
       this.$emit("emitPixel", { xOne: this.xCoord + 1, yOne: this.yCoord + 1 });
     },
   },
-  props: ["xCoord", "yCoord", "sideLength"],
+  props: ["xCoord", "yCoord", "sideLength", "chessset"],
   data() {
     return {
       anothersideLength: 100,
+      vbx: 0,
+      vby: 0,
+      vbh: 1500,
     };
   },
   computed: {
+    path() {
+      return this.chessset;
+    },
+    viewbox() {
+      const { vbx, vby, vbh } = this.$data;
+      return [vbx, vby, this.sideLength, vbh].join(" ");
+    },
     computedXCoord() {
       return this.xCoord * this.sideLength;
     },
