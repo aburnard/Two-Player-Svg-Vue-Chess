@@ -6,8 +6,8 @@
       :y="computedYCoord"
       :width="sideLength"
       :height="sideLength"
-      stroke="brown"
-      stroke-width="5"
+      stroke="red"
+      stroke-width="1"
       :fill="computedFill"
     />
     <svg
@@ -40,9 +40,9 @@ export default {
   data() {
     return {
       anothersideLength: 100,
-      vbx: 0,
-      vby: 0,
-      vbh: 1500,
+      vbx: this.sideLength * -1.5,
+      vby: this.sideLength * -1.5,
+      vbh: this.sideLength * 25,
     };
   },
   computed: {
@@ -68,8 +68,8 @@ export default {
         (this.xCoord % 2 && this.yCoord % 2) ||
         (this.xCoord % 2 == 0 && this.yCoord % 2 !== 1)
       ) {
-        return "white";
-      } else return "black";
+        return "yellow";
+      } else return "red";
     },
   },
 };

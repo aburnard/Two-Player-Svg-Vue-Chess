@@ -37,14 +37,14 @@
               @emitPixel="emitPixel"
             />
           </g>
-          <g>
+          <!-- <g>
             <GamePiece
               ref="child"
               :xCoord="pieceX"
               :yCoord="pieceY"
               :sideLength="sideLength"
             />
-          </g>
+          </g> -->
         </svg>
       </div>
       <div
@@ -59,13 +59,13 @@
 
 <script>
 import BoardSquare from "@/components/BoardSquare.vue";
-import GamePiece from "@/components/GamePiece.vue";
+//import GamePiece from "@/components/GamePiece.vue";
 import chessset from "@/assets/chessset.json";
 export default {
   name: "HelloWorld",
   components: {
     BoardSquare,
-    GamePiece,
+    // GamePiece,
   },
   methods: {
     emitPixel({ xOne, yOne }) {
