@@ -1,13 +1,9 @@
 <template>
   <div class="hello">
     <b-field label="Name">
-      <b-input v-model="chessset.chessset"></b-input>
+      <b-input v-model="chessset.board[selectedX][selectedY]"> </b-input>
     </b-field>
 
-    <!-- <button @click="toggleVis" class="button">Tog</button>
-    <button @click="incrementSpot" class="button">Down</button>
-    <button @click="incrementSpot" class="button">Left</button>
-    <button @click="incrementSpot" class="button">Right</button> -->
     <b-field label="pieceX">
       <b-input v-model="pieceX"></b-input>
     </b-field>
@@ -35,17 +31,15 @@
               :sideLength="sideLength"
               :chessset="chessset"
               @emitPixel="emitPixel"
+              :selectedSquare="{ pieceX, pieceY }"
             />
           </g>
-          <!-- <g>
-            <GamePiece
-              ref="child"
-              :xCoord="pieceX"
-              :yCoord="pieceY"
-              :sideLength="sideLength"
-            />
-          </g> -->
         </svg>
+        <b-field>
+          <b-switch v-model="aSquareSelected">
+            {{ aSquareSelected }}
+          </b-switch>
+        </b-field>
       </div>
       <div
         class="column"
@@ -69,8 +63,21 @@ export default {
   },
   methods: {
     emitPixel({ xOne, yOne }) {
-      this.pieceX = xOne;
-      this.pieceY = yOne;
+      // this.pieceX = xOne;
+      // this.pieceY = yOne;
+      if (this.aSquareSelected) {
+        this.arrayPlaceHolder = chessset.board;
+        this.arrayPlaceHolder[yOne - 1][xOne - 1] = this.currentSelectedPiece;
+        chessset.board = this.arrayPlaceHolder.slice(0);
+        this.arrayPlaceHolder[this.pieceY - 1][this.pieceX - 1] = 0;
+        chessset.board = this.arrayPlaceHolder.slice(0);
+        this.aSquareSelected = false;
+      } else {
+        this.pieceX = xOne;
+        this.pieceY = yOne;
+        this.currentSelectedPiece = chessset.board[yOne - 1][xOne - 1];
+        this.aSquareSelected = true;
+      }
     },
   },
 
@@ -81,9 +88,14 @@ export default {
       noCols: 8,
       sideLength: 50,
       randomthing: [],
+      selectedX: 0,
+      selectedY: 0,
       pieceX: 2,
       pieceY: 5,
       pieceArray: [200, 200],
+      arrayPlaceHolder: [],
+      currentSelectedPiece: 0,
+      aSquareSelected: false,
     };
   },
   props: {
@@ -94,6 +106,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+body {
+  background-color: rgb(20, 5, 65);
+}
 h3 {
   margin: 40px 0 0;
 }

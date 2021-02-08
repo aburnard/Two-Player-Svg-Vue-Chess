@@ -6,21 +6,22 @@
       :y="computedYCoord"
       :width="sideLength"
       :height="sideLength"
-      stroke="red"
-      stroke-width="1"
+      stroke="purple"
+      :stroke-width="selectedSquareStroke"
       :fill="computedFill"
     />
     <svg
-      :height="sideLength * 2.5"
-      :width="sideLength * 2.5"
-      :x="xCoord * sideLength - sideLength * 2.1 + sideLength"
+      @click="alert"
+      :height="sideLength * 2"
+      :width="sideLength * 2"
+      :x="xCoord * sideLength - sideLength * 1.8 + sideLength"
       :y="yCoord * sideLength - sideLength + sideLength"
       :view-box.camel="viewbox"
     >
       <polygon
         id="Path"
-        stroke="#0000FF"
-        fill="#0000FF"
+        stroke="#47473b"
+        :fill="pieceColor"
         :points="chessset.chessset[chessset.board[yCoord][xCoord]]"
       ></polygon>
     </svg>
@@ -36,7 +37,7 @@ export default {
       this.$emit("emitPixel", { xOne: this.xCoord + 1, yOne: this.yCoord + 1 });
     },
   },
-  props: ["xCoord", "yCoord", "sideLength", "chessset"],
+  props: ["xCoord", "yCoord", "sideLength", "chessset", "selectedSquare"],
   data() {
     return {
       anothersideLength: 100,
@@ -46,8 +47,21 @@ export default {
     };
   },
   computed: {
+    pieceColor() {
+      return "#47473b";
+    },
     path() {
       return this.chessset;
+    },
+    selectedSquareStroke() {
+      if (
+        this.selectedSquare.pieceX - 1 == this.xCoord &&
+        this.selectedSquare.pieceY - 1 == this.yCoord
+      ) {
+        return 6;
+      } else {
+        return 1;
+      }
     },
     viewbox() {
       const { vbx, vby, vbh } = this.$data;
