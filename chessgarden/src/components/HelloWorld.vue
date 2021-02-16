@@ -1,9 +1,11 @@
 <template>
   <div class="hello">
+    <b-field label="CurrentAscii">
+      <b-input v-model="currentAscii"> </b-input>
+    </b-field>
     <b-field label="Name">
       <b-input v-model="chessset.board[selectedX][selectedY]"> </b-input>
     </b-field>
-
     <b-field label="pieceX">
       <b-input v-model="pieceX"></b-input>
     </b-field>
@@ -52,11 +54,15 @@
 </template>
 
 <script>
+import Chess from "chess.js";
 import BoardSquare from "@/components/BoardSquare.vue";
 //import GamePiece from "@/components/GamePiece.vue";
 import chessset from "@/assets/chessset.json";
 export default {
   name: "HelloWorld",
+  created() {
+    this.game = new Chess();
+  },
   components: {
     BoardSquare,
     // GamePiece,
@@ -97,6 +103,13 @@ export default {
       currentSelectedPiece: 0,
       aSquareSelected: false,
     };
+  },
+  computed: {
+    // a computed getter
+    currentAscii: function () {
+      // `this` points to the vm instance
+      return this.game.ascii();
+    },
   },
   props: {
     msg: String,
