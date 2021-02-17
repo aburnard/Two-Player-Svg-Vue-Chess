@@ -21,8 +21,8 @@
       <polygon
         id="Path"
         stroke="#47473b"
-        :fill="pieceColor"
-        :points="chessset.chessset[chessset.board[yCoord][xCoord]]"
+        :fill="returnPieceColorAtSquare"
+        :points="returnPiecePathAtSquare"
       ></polygon>
     </svg>
   </g>
@@ -37,22 +37,42 @@ export default {
       this.$emit("emitPixel", { xOne: this.xCoord + 1, yOne: this.yCoord + 1 });
     },
   },
-  props: ["xCoord", "yCoord", "sideLength", "chessset", "selectedSquare"],
+  props: [
+    "chessJsBoard",
+    "xCoord",
+    "yCoord",
+    "sideLength",
+    "chessset",
+    "selectedSquare",
+  ],
   data() {
     return {
       anothersideLength: 100,
       vbx: this.sideLength * -1.5,
       vby: this.sideLength * -1.5,
       vbh: this.sideLength * 25,
+      wbToColor: { w: "white", b: "#47473b" },
     };
   },
   computed: {
+    returnPiecePathAtSquare() {
+      if (this.chessJsBoard[this.yCoord][this.xCoord]) {
+        return this.chessset.piecepaths[
+          this.chessJsBoard[this.yCoord][this.xCoord].type
+        ];
+      } else return this.chessset.piecepaths.x;
+    },
+    returnPieceColorAtSquare() {
+      if (this.chessJsBoard[this.yCoord][this.xCoord]) {
+        return this.wbToColor[
+          this.chessJsBoard[this.yCoord][this.xCoord].color
+        ];
+      } else return this.chessset.piecepaths.x;
+    },
     pieceColor() {
       return "#47473b";
     },
-    path() {
-      return this.chessset;
-    },
+
     selectedSquareStroke() {
       if (
         this.selectedSquare.pieceX - 1 == this.xCoord &&

@@ -34,6 +34,7 @@
               :chessset="chessset"
               @emitPixel="emitPixel"
               :selectedSquare="{ pieceX, pieceY }"
+              :chessJsBoard="game.board()"
             />
           </g>
         </svg>
@@ -69,19 +70,46 @@ export default {
   },
   methods: {
     emitPixel({ xOne, yOne }) {
+      const numberToLetter = {
+        1: "a",
+        2: "b",
+        3: "c",
+        4: "d",
+        5: "e",
+        6: "f",
+        7: "g",
+        8: "h",
+      };
+      const reverseYCoord = {
+        1: 8,
+        2: 7,
+        3: 6,
+        4: 5,
+        5: 4,
+        6: 3,
+        7: 2,
+        8: 1,
+      };
+      //chess.move({ from: 'g2', to: 'g3' })
       // this.pieceX = xOne;
       // this.pieceY = yOne;
+      // this.game.move("e4");
       if (this.aSquareSelected) {
         this.arrayPlaceHolder = chessset.board;
         this.arrayPlaceHolder[yOne - 1][xOne - 1] = this.currentSelectedPiece;
         chessset.board = this.arrayPlaceHolder.slice(0);
         this.arrayPlaceHolder[this.pieceY - 1][this.pieceX - 1] = 0;
         chessset.board = this.arrayPlaceHolder.slice(0);
+        this.moveTo = "" + numberToLetter[xOne] + reverseYCoord[yOne];
+
+        this.game.move({ from: this.moveFrom, to: this.moveTo });
         this.aSquareSelected = false;
       } else {
         this.pieceX = xOne;
         this.pieceY = yOne;
         this.currentSelectedPiece = chessset.board[yOne - 1][xOne - 1];
+        this.moveFrom = "" + numberToLetter[xOne] + reverseYCoord[yOne];
+
         this.aSquareSelected = true;
       }
     },
@@ -89,6 +117,8 @@ export default {
 
   data() {
     return {
+      moveFrom: "",
+      moveTo: "",
       chessset: chessset,
       noRows: 8,
       noCols: 8,
@@ -106,6 +136,9 @@ export default {
   },
   computed: {
     // a computed getter
+    chessJsBoard: function () {
+      return this.game.board();
+    },
     currentAscii: function () {
       // `this` points to the vm instance
       return this.game.ascii();
