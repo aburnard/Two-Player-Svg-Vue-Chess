@@ -1,23 +1,9 @@
 <template>
-  <div class="hello">
-    <b-field label="CurrentAscii">
-      <b-input v-model="currentAscii"> </b-input>
-    </b-field>
-    <b-field label="Name">
-      <b-input v-model="chessset.board[selectedX][selectedY]"> </b-input>
-    </b-field>
-    <b-field label="pieceX">
-      <b-input v-model="pieceX"></b-input>
-    </b-field>
+  <div :style="{ backgroundColor: backgroundByTurn }" class="hello">
     <section>
-      <b-field label="SideLength">
+      <!-- <b-field label="SideLength">
         <b-slider :min="1" :max="70" v-model="sideLength"></b-slider>
-        <b-slider :min="1" :max="noCols" v-model="pieceY"></b-slider>
-      </b-field>
-      <b-field label="Simple">
-        <b-slider :min="1" :max="noRows" v-model="pieceX"></b-slider>
-        <b-slider :min="1" :max="noCols" v-model="pieceY"></b-slider>
-      </b-field>
+      </b-field> -->
     </section>
     <div class="columns">
       <div class="column"></div>
@@ -26,6 +12,7 @@
           <g v-for="(item, rowIndex) in noRows" :key="rowIndex">
             <BoardSquare
               v-for="(item, colIndex) in noCols"
+              :stroke="white"
               :id="key"
               :xCoord="colIndex"
               :yCoord="rowIndex"
@@ -38,11 +25,6 @@
             />
           </g>
         </svg>
-        <b-field>
-          <b-switch v-model="aSquareSelected">
-            {{ aSquareSelected }}
-          </b-switch>
-        </b-field>
       </div>
       <div
         class="column"
@@ -102,8 +84,24 @@ export default {
         chessset.board = this.arrayPlaceHolder.slice(0);
         this.moveTo = "" + numberToLetter[xOne] + reverseYCoord[yOne];
 
-        this.game.move({ from: this.moveFrom, to: this.moveTo });
+        //this.game.move({ from: this.moveFrom, to: this.moveTo });
         this.aSquareSelected = false;
+
+        this.game.move({
+          from: this.moveFrom,
+          to: this.moveTo,
+          promotion: "q",
+        });
+
+        if (this.game.turn() == "w") {
+          this.whitesTurn = true;
+        } else this.whitesTurn = false;
+        if (this.game.in_check() && !this.game.in_checkmate()) {
+          this.$buefy.toast.open("Check!");
+        }
+        if (this.game.in_checkmate()) {
+          this.$buefy.toast.open("Checkmate!");
+        }
       } else {
         this.pieceX = xOne;
         this.pieceY = yOne;
@@ -117,6 +115,11 @@ export default {
 
   data() {
     return {
+      myStyle: {
+        backgroundColor: "#16a085",
+      },
+      whitesTurn: true,
+      wbToColor: { w: "white", b: "#47473b" },
       moveFrom: "",
       moveTo: "",
       chessset: chessset,
@@ -139,9 +142,16 @@ export default {
     chessJsBoard: function () {
       return this.game.board();
     },
-    currentAscii: function () {
+    currentTurn: function () {
       // `this` points to the vm instance
-      return this.game.ascii();
+      return this.game.turn();
+    },
+    backgroundByTurn() {
+      if (this.whitesTurn) {
+        return "white";
+      } else {
+        return "black";
+      }
     },
   },
   props: {
@@ -152,9 +162,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body {
-  background-color: rgb(20, 5, 65);
-}
 h3 {
   margin: 40px 0 0;
 }
